@@ -1,6 +1,6 @@
-package setawatch;
+package deepspace;
 
-import setawatch.game.Game;
+import deepspace.game.Game;
 
 public class Model {
     private Game game;

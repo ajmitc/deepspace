@@ -1,6 +1,6 @@
-package setawatch;
+package deepspace;
 
-import setawatch.view.View;
+import deepspace.view.View;
 
 public class Main {
     public static void main(String ... args){

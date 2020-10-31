@@ -1,6 +1,6 @@
-package setawatch.view;
+package deepspace.view;
 
-import setawatch.Model;
+import deepspace.Model;
 
 import javax.swing.*;
 import java.awt.*;
