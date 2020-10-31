@@ -1,0 +1,12 @@
+Before you start, right click on the threat deck and shuffle the pack.
+Drag & drop to draw threats from there. 
+
+Markers for hull & shields should be at full when you start a new game.
+
+The "Crew Dice" button will show crew dice rolls in the output window.
+To play the dice, drag die faces from the "pieces" tab to the board. 
+
+Right click to delete any die face or card.
+
+
+Any questions, use the Vassal wiki page for this module
