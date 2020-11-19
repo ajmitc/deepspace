@@ -1,6 +1,7 @@
 package deepspace.game.threat;
 
 import deepspace.game.Crew;
+import deepspace.game.CrewDice;
 import deepspace.game.Game;
 import deepspace.game.PhaseStep;
 
@@ -13,7 +14,10 @@ public class BoostMorale extends InternalThreat{
 
     @Override
     public void activate(Game game) {
-        game.getShip().adjScanner(-1);
+        if (!game.getShip().getScannerCrewDice().isEmpty()) {
+            CrewDice dice = game.getShip().getScannerCrewDice().remove(0);
+            game.getReturningCrewDice().add(dice);
+        }
         resolved = true;
     }
 

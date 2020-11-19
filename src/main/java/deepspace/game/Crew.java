@@ -8,7 +8,7 @@ public enum Crew {
     COMMANDER("Commander.png"),
     SCIENCE("Science.png"),
     ENGINEERING("Engineering.png"),
-    TACTICAL("Tactial.png"),
+    TACTICAL("Tactical.png"),
     MEDICAL("Medical.png"),
     THREAT_DETECTED("ThreatDetected.png");
 

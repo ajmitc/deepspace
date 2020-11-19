@@ -11,7 +11,7 @@ public class Game {
 
     private Ship ship;
     private List<CrewDice> infirmary = new ArrayList<>();
-    private boolean infirmaryBuddySystem;
+    private boolean infirmaryBuddySystem = false;
     private Map<Integer, List<Threat>> externalThreats = new HashMap<>();
     private List<Threat> internalThreats = new ArrayList<>();
     private ThreatDeck threatDeck = new ThreatDeck();
@@ -24,6 +24,7 @@ public class Game {
     private Set<Crew> blockedCrew = new HashSet<>();
 
     public Game(){
+        this.ship = new Ship("Ship", "DSD6board.png", 8, 4, 3);
         setPhase(Phase.SETUP);
         crewDice.add(new CrewDice());
         crewDice.add(new CrewDice());
@@ -31,6 +32,11 @@ public class Game {
         crewDice.add(new CrewDice());
         crewDice.add(new CrewDice());
         crewDice.add(new CrewDice());
+
+        externalThreats.put(1, new ArrayList<>());
+        externalThreats.put(2, new ArrayList<>());
+        externalThreats.put(3, new ArrayList<>());
+        externalThreats.put(4, new ArrayList<>());
     }
 
     public void setPhase(Phase phase) {
@@ -89,6 +95,10 @@ public class Game {
             }
         }
         return 0;
+    }
+
+    public List<Threat> getInternalThreats() {
+        return internalThreats;
     }
 
     public ThreatDeck getThreatDeck() {

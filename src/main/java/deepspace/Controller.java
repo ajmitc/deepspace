@@ -4,13 +4,17 @@ import deepspace.game.Crew;
 import deepspace.game.CrewDice;
 import deepspace.game.Phase;
 import deepspace.game.PhaseStep;
+import deepspace.game.threat.Threat;
 import deepspace.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class Controller {
+    private static Logger logger = Logger.getLogger(Controller.class.getName());
+
     private Model model;
     private View view;
 
@@ -25,6 +29,13 @@ public class Controller {
                 case SETUP:
                     switch (model.getGame().getPhaseStep()){
                         case START_PHASE:
+                            logger.info("Starting SETUP Phase");
+                            // Draw 2 Threats
+                            Threat threat = model.getGame().getThreatDeck().draw();
+                            applyThreat(threat);
+                            threat = model.getGame().getThreatDeck().draw();
+                            applyThreat(threat);
+                            model.getGame().setPhaseStep(PhaseStep.END_PHASE);
                             break;
                         case END_PHASE:
                             model.getGame().setPhase(Phase.ROLL);
@@ -34,6 +45,7 @@ public class Controller {
                 case ROLL:
                     switch (model.getGame().getPhaseStep()){
                         case START_PHASE:
+                            logger.info("Starting ROLL Phase");
                             model.getGame().getCrewDice().forEach(cd -> {
                                 cd.roll();
                             });
@@ -55,6 +67,7 @@ public class Controller {
                 case CHECK_SCANNERS:
                     switch (model.getGame().getPhaseStep()){
                         case START_PHASE:
+                            logger.info("Starting CHECK_SCANNERS Phase");
                             if (model.getGame().getShip().getScannerCrewDice().size() == model.getGame().getShip().getMaxScanner()){
                                 model.getGame().getReturningCrewDice().addAll(model.getGame().getShip().getScannerCrewDice());
                                 model.getGame().getShip().getScannerCrewDice().clear();
@@ -70,8 +83,11 @@ public class Controller {
                 case ASSIGN_CREW:
                     switch (model.getGame().getPhaseStep()){
                         case START_PHASE:
+                            logger.info("Starting ASSIGN_CREW Phase");
                             model.getGame().setPhaseStep(PhaseStep.END_PHASE);
-                            break;
+                            if (model.getGame().getCrewDice().stream().allMatch(d -> d.isAssigned()))
+                                break;
+                            return;
                         case END_PHASE:
                             model.getGame().setPhase(Phase.DRAW_THREAT);
                             break;
@@ -80,6 +96,7 @@ public class Controller {
                 case DRAW_THREAT:
                     switch (model.getGame().getPhaseStep()){
                         case START_PHASE:
+                            logger.info("Starting DRAW_THREAT Phase");
                             model.getGame().setPhaseStep(PhaseStep.END_PHASE);
                             break;
                         case END_PHASE:
@@ -90,6 +107,7 @@ public class Controller {
                 case ROLL_THREAT:
                     switch (model.getGame().getPhaseStep()){
                         case START_PHASE:
+                            logger.info("Starting ROLL_THREAT Phase");
                             model.getGame().setPhaseStep(PhaseStep.END_PHASE);
                             break;
                         case ROLL_THREAT_SEND_CREW_TO_INFIRMARY:
@@ -103,6 +121,7 @@ public class Controller {
                 case GATHER_CREW:
                     switch (model.getGame().getPhaseStep()){
                         case START_PHASE:
+                            logger.info("Starting GATHER_CREW Phase");
                             model.getGame().setPhaseStep(PhaseStep.END_PHASE);
                             break;
                         case END_PHASE:
@@ -112,5 +131,15 @@ public class Controller {
                     break;
             }
         }
+    }
+
+    private void applyThreat(Threat threat){
+        if (threat.isExternal()){
+            model.getGame().getExternalThreats().get(threat.getStartingHealth()).add(threat);
+        }
+        else {
+            model.getGame().getInternalThreats().add(threat);
+        }
+        threat.play(model.getGame());
     }
 }

@@ -4,7 +4,7 @@ import deepspace.game.Game;
 
 public class Flagship extends ExternalThreat{
     public Flagship(){
-        super("Flagship", 4, "Flagship.png", 4, 5, 6);
+        super("Flagship", 4, "flagship.png", 4, 5, 6);
     }
 
     @Override

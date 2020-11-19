@@ -6,7 +6,7 @@ public class Model {
     private Game game;
 
     public Model(){
-
+        game = new Game();
     }
 
     public Game getGame() {
